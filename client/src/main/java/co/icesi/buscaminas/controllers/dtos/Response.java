@@ -1,4 +1,4 @@
-package client;
+package co.icesi.buscaminas.controllers.dtos;
 
 import java.util.Map;
 

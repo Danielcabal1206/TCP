@@ -1,4 +1,4 @@
-package client;
+package co.icesi.buscaminas.client;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -131,11 +131,19 @@ public class MainClient {
 
             Response res = sendRequest(req);
             if (res != null && res.data != null) {
-                printBoard(res.data.board);
+                // Convertir la clave "board" del Map a una matriz Cell[][]
+                if (res.data.containsKey("board")) {
+                    String boardJson = gson.toJson(res.data.get("board"));
+                    Cell[][] board = gson.fromJson(boardJson, Cell[][].class);
+                    printBoard(board);
+                }
 
                 // Detección de fin de partida
-                if (Boolean.TRUE.equals(res.data.gameEnd)) {
-                    if (Boolean.TRUE.equals(res.data.win)) {
+                Boolean gameEnd = (Boolean) res.data.get("gameEnd");
+                Boolean win = (Boolean) res.data.get("win");
+
+                if (Boolean.TRUE.equals(gameEnd)) {
+                    if (Boolean.TRUE.equals(win)) {
                         System.out.println("\n¡FELICIDADES! Has ganado la partida.");
                     } else {
                         System.out.println("\n¡BOOM! Tocaste una mina. Fin del juego.");

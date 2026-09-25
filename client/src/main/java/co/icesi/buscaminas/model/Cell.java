@@ -1,4 +1,4 @@
-package client;
+package co.icesi.buscaminas.model;
 
 import java.io.Serializable;
 
