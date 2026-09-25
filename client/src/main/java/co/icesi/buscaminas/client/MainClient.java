@@ -52,16 +52,37 @@ public class MainClient {
     // Renderizado del tablero con colores ANSI
     public void printBoard(Cell[][] board) {
         if (board == null) return;
+
+        // Códigos ANSI de color
+        String RESET = "\u001B[0m";
+        String RED = "\u001B[31m";
+        String YELLOW = "\u001B[33m";
+        String CYAN = "\u001B[36m";
+
         System.out.println();
         System.out.print("   ");
         for (int j = 0; j < board[0].length; j++) {
             System.out.print(" " + j);
         }
         System.out.println();
+
         for (int i = 0; i < board.length; i++) {
             System.out.print(i + " [");
             for (int j = 0; j < board[0].length; j++) {
-                System.out.print(" " + board[i][j]);
+                Cell cell = board[i][j];
+                String symbol;
+
+                if (cell.isMarked()) {
+                    symbol = YELLOW + "M" + RESET;
+                } else if (cell.isHide() && !cell.isShowAll()) {
+                    symbol = ".";
+                } else if (cell.isLandMine()) {
+                    symbol = RED + "*" + RESET;
+                } else {
+                    int val = cell.getValue();
+                    symbol = (val > 0) ? CYAN + val + RESET : " ";
+                }
+                System.out.print(" " + symbol);
             }
             System.out.println(" ]");
         }
